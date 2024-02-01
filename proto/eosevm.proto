@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package eosevm.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message Transactions {
+    repeated Transaction transactions = 1;
+}
+
+message Transaction {
+    string from = 1;
+    string to = 2;
+    string hash = 3;
+    string value = 4;
+    string gas_price = 5;
+    string gas_used = 6;
+    uint64 timestamp = 7;
+}
