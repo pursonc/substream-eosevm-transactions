@@ -14,10 +14,10 @@ pub struct Transaction {
     pub to: ::prost::alloc::string::String,
     #[prost(string, tag="3")]
     pub hash: ::prost::alloc::string::String,
-    #[prost(string, tag="4")]
-    pub value: ::prost::alloc::string::String,
-    #[prost(string, tag="5")]
-    pub gas_price: ::prost::alloc::string::String,
+    #[prost(uint64, tag="4")]
+    pub value: u64,
+    #[prost(uint64, tag="5")]
+    pub gas_price: u64,
     #[prost(string, tag="6")]
     pub gas_used: ::prost::alloc::string::String,
     #[prost(uint64, tag="7")]
