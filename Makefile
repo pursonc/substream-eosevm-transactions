@@ -36,3 +36,7 @@ gui:
 .PHONY: deploy
 deploy:
 	graph deploy --studio erc-20
+
+.PHONE: package
+package: build
+	substreams pack -o substreams-eosevm.spkg substreams.yaml
