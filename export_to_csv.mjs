@@ -79,21 +79,17 @@ emitter.on("anyMessage", (message, cursor, clock) => {
   );
 
   // action traces
-  for (const transaction  of message?.Transactions ?? []) {
-             
-      
-       
-        // eosio.token::transfer
-        const { from, to, hash, value, gas_price, gas_used, timestamp } =
-          JSON.parse(transaction);
-        if (ignore.has(from) || ignore.has(to)) continue;
-        writer.write(
-          [block_num, hash, from, to, value, gas_price, gas_used, timestamp].join(",") +
-            "\n"
-        );
-        total_writes += 1;
-       
-     
+  for (const transaction of message?.transactions ?? []) {
+    // eosio.token::transfer
+    const { from, to, hash, value, gasPrice, gasUsed, timestamp } =
+      transaction;
+    if (ignore.has(from) || ignore.has(to)) continue;
+    writer.write(
+      [block_num, hash, from, to, value, gasPrice, gasUsed, timestamp].join(
+        ","
+      ) + "\n"
+    );
+    total_writes += 1;
   }
 
   // save cursor
