@@ -27,7 +27,7 @@ modules:
     inputs:
       - source: sf.ethereum.type.v2.Block
     output:
-      type: proto:eosevm.v1.Transaction
+      type: proto:eosevm.v1.Transactions
 
   # - name: db_out
   #   kind: map
