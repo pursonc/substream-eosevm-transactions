@@ -4,7 +4,7 @@ import {
   createRegistry,
   createRequest,
 } from "@substreams/core";
-import { readPackage } from "@substreams/manifest";
+import { readPackageFromFile } from "@substreams/manifest";
 import { BlockEmitter } from "@substreams/node";
 import { createNodeTransport } from "@substreams/node/createNodeTransport";
 import LogUpdate from "log-update";
@@ -19,13 +19,12 @@ const token = process.env.SUBSTREAMS_API_KEY;
 
 // User parameters
 const baseUrl = "https://eosevm.substreams.pinax.network:443";
-const manifest =
-  "https://github.com/pursonchen/substream-eosevm-transactions/releases/download/0.0.1/substreams-eosevm.spkg";
+const manifest = "./eosevm-v0.1.0.spkg";
 const outputModule = "map_transations";
-const startBlockNum = 10;
+const startBlockNum = -10000;
 
 // Read Substream
-const substreamPackage = await readPackage(manifest);
+const substreamPackage = await readPackageFromFile(manifest);
 if (!substreamPackage.modules) {
   throw new Error("No modules found in substream package");
 }
@@ -59,7 +58,6 @@ emitter.on("session", (session) => {
 });
 
 // Filter data
-const ignore = new Set(["eosiopowcoin"]);
 let total_writes = 0;
 
 // CSV writer (append)
@@ -77,18 +75,12 @@ emitter.on("anyMessage", (message, cursor, clock) => {
   LogUpdate(
     `block_num: ${block_num} timestamp: ${timestamp.seconds} total_writes: ${total_writes}`
   );
+  console.log(message)
 
   // action traces
-  for (const transaction of message?.transactions ?? []) {
-    // eosio.token::transfer
-    const { from, to, hash, value, gasPrice, gasUsed, timestamp } =
-      transaction;
-    if (ignore.has(from) || ignore.has(to)) continue;
-    writer.write(
-      [block_num, hash, from, to, value, gasPrice, gasUsed, timestamp].join(
-        ","
-      ) + "\n"
-    );
+  for (const transaction  of message?.transactions ?? []) {
+    const { from, to, hash, value, gasPrice, gasUsed, timestamp } = transaction;
+    writer.write([block_num, hash, from, to, value, gasPrice, gasUsed, timestamp].join(",") + "\n");
     total_writes += 1;
   }
 
