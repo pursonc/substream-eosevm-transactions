@@ -19,7 +19,7 @@ const token = process.env.SUBSTREAMS_API_KEY;
 
 // User parameters
 const baseUrl = "https://eosevm.substreams.pinax.network:443";
-const manifest = "./eosevm-v0.1.0.spkg";
+const manifest = "./substreams-eosevm.spkg";
 const outputModule = "map_transations";
 const startBlockNum = -10000;
 
